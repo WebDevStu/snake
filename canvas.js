@@ -26,5 +26,5 @@ var Canvas = function () {
 
 Canvas.prototype.draw = function () {
 
-    console.log('rofl', this);
+    //console.log('rofl', this);
 };
