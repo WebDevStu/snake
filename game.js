@@ -14,6 +14,9 @@
             }
         };
 
+    _.forEach({1:'1', 2:'2', 3:'3'}, function (val, label) {
+        console.log(val, label);
+    });
 
     // pause the game on blur
     window.addEventListener('blur', function () {
