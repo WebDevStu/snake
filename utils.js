@@ -6,6 +6,15 @@ var _ = {
     events: {},
 
 
+    /**
+     * @example:
+     * {
+     *      'binding:key': 'methodName',
+     *      {string}     : {string}
+     * }
+     * @param bindings
+     * @param scope
+     */
     listenTo: function (bindings, scope) {
 
         _.forEach(bindings, function (method, binding) {
@@ -21,7 +30,9 @@ var _ = {
     trigger: function (trigger) {
 
         if (_.events[trigger]) {
+
             _.forEach(_.events[trigger], function (fn) {
+
                 if (fn._scope) {
                     fn.call(fn._scope);
                 } else {
