@@ -10,13 +10,11 @@
 
                 // do something here
 
+                _.trigger('frame:change', 'lol');
+
                 window.requestAnimationFrame(render);
             }
         };
-
-    _.forEach({1:'1', 2:'2', 3:'3'}, function (val, label) {
-        console.log(val, label);
-    });
 
     // pause the game on blur
     window.addEventListener('blur', function () {

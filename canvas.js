@@ -16,9 +16,15 @@ var Canvas = function () {
     this.ctx = this.canvas.getContext('2d');
 
     document.body.appendChild(this.canvas);
+
+    // listen events
+    _.listenTo({
+        'frame:change': 'draw'
+    }, this);
 };
 
 
-Canvas.prototype.foo = function () {
+Canvas.prototype.draw = function () {
 
+    console.log('rofl', this);
 };

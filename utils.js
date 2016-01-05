@@ -19,10 +19,13 @@ var _ = {
 
         _.forEach(bindings, function (method, binding) {
 
-            scope[binding]._scope = scope;
-
-            _.events[prop] = _.events[prop] || [];
-            _.events[prop].push(scope[binding]);
+            try {
+                scope[method]._scope = scope;
+            } catch (e) {
+                console.error('bound method does not exists');
+            }
+            _.events[binding] = _.events[binding] || [];
+            _.events[binding].push(scope[method]);
         });
     },
 
@@ -30,7 +33,6 @@ var _ = {
     trigger: function (trigger) {
 
         if (_.events[trigger]) {
-
             _.forEach(_.events[trigger], function (fn) {
 
                 if (fn._scope) {
@@ -52,12 +54,16 @@ var _ = {
         }
 
         if (item instanceof Array) {
-            item.forEach(callback);
+            item.forEach(callback, scope);
         } else {
 
             for (prop in item) {
                 if (item.hasOwnProperty(prop)) {
-                    callback(item[prop], prop);
+                    if (scope) {
+                        callback.call(scope, item[prop], prop);
+                    } else {
+                        callback(item[prop], prop);
+                    }
                 }
             }
         }
