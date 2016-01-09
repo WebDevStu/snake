@@ -8,10 +8,7 @@
 
             if (gameInPlay) {
 
-                // do something here
-
-                _.trigger('frame:change', 'lol');
-
+                _.trigger('frame:change');
                 window.requestAnimationFrame(render);
             }
         };
@@ -23,14 +20,14 @@
 
     // start again on focus
     window.addEventListener('focus', function () {
-
         gameInPlay = true;
         window.requestAnimationFrame(render);
     });
 
-
-    // @TODO bind key events here
-
+    // get key down events
+    window.addEventListener('keydown', function (evt) {
+        _.trigger('change:direction', evt.keyCode);
+    }, false);
 
     // start the game
     window.requestAnimationFrame(render);

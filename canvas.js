@@ -5,8 +5,14 @@
  */
 var Canvas = function () {
 
+    // listen events
+    _.listenTo({
+        'frame:change': 'draw'
+    }, this);
+
+    // config
     this.frame = 0;
-    this.speed = 60;
+    this.speed = 30;
 
     // canvas
     this.canvas = document.createElement('canvas');
@@ -21,14 +27,12 @@ var Canvas = function () {
 
     // new snake for the board
     this.snake = new Snake(this.ctx);
-
-    // listen events
-    _.listenTo({
-        'frame:change': 'draw'
-    }, this);
 };
 
 
+/**
+ * draw
+ */
 Canvas.prototype.draw = function () {
 
     this.frame += 1;
@@ -36,5 +40,7 @@ Canvas.prototype.draw = function () {
     if (this.frame >= this.speed) {
         this.frame = 0;
 
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.snake.move();
     }
 };

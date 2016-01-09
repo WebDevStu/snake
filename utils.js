@@ -3,6 +3,9 @@
 
 var _ = {
 
+    /**
+     * events object
+     */
     events: {},
 
 
@@ -30,22 +33,33 @@ var _ = {
     },
 
 
+    /**
+     * trigger
+     * triggers the subscribed methods in the events object
+     *
+     * @param trigger {String}
+     */
     trigger: function (trigger) {
+
+        var args = _.toArray(arguments).slice(1);
 
         if (_.events[trigger]) {
             _.forEach(_.events[trigger], function (fn) {
-
-                if (fn._scope) {
-                    fn.call(fn._scope);
-                } else {
-                    fn();
-                }
+                fn.apply(fn._scope || this, args);
             });
         }
     },
 
 
-    forEach: function (item, callback, scope) {
+    /**
+     * forEach
+     * wrapper to for each both arrays and objects
+     *
+     * @param item {Array|Object}
+     * @param predicate {Function}
+     * @param scope {Object} !optional
+     */
+    forEach: function (item, predicate, scope) {
 
         var prop;
 
@@ -54,18 +68,29 @@ var _ = {
         }
 
         if (item instanceof Array) {
-            item.forEach(callback, scope);
+            item.forEach(predicate, scope);
         } else {
 
             for (prop in item) {
                 if (item.hasOwnProperty(prop)) {
                     if (scope) {
-                        callback.call(scope, item[prop], prop);
+                        predicate.call(scope, item[prop], prop);
                     } else {
-                        callback(item[prop], prop);
+                        predicate(item[prop], prop);
                     }
                 }
             }
         }
+    },
+
+
+    /**
+     * toArray
+     *
+     * @param item
+     * @returns {Array}
+     */
+    toArray: function (item) {
+        return Array.prototype.slice.call(item);
     }
 };
