@@ -31,4 +31,10 @@
 
     // start the game
     window.requestAnimationFrame(render);
+
+    _.listenTo({
+        'game:over': function () {
+            gameInPlay = false;
+        }
+    })
 } ());

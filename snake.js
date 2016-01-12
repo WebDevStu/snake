@@ -3,16 +3,17 @@
  *
  * @constructor
  */
-var Snake = function (ctx) {
+var Snake = function (ctx, food) {
 
     _.listenTo({
         'change:direction': 'setDirection'
     }, this);
 
     this.ctx = ctx;
+    this.food = food;
     this.tail = [{
-        x: 198,
-        y: 148
+        x: 200,
+        y: 150
     }];
 
     // 0 = left, 1 = up, 2 = right, 3 = down;
@@ -38,30 +39,41 @@ Snake.prototype.move = function () {
     switch (this.direction) {
 
         case 0:
-            coordinates.x = first.x - 4;
+            coordinates.x = first.x - 10;
             break;
 
         case 1:
-            coordinates.y = first.y - 4;
+            coordinates.y = first.y - 10;
             break;
 
         case 2:
-            coordinates.x = first.x + 4;
+            coordinates.x = first.x + 10;
             break;
 
         case 3:
-            coordinates.y = first.y + 4;
+            coordinates.y = first.y + 10;
             break;
     }
 
     // add to start of tail
     this.tail.unshift(coordinates);
 
-    // remove last if no food eaten
-    this.tail.pop();
+    if (coordinates.x === this.food.x && coordinates.y === this.food.y) {
+        _.trigger('food:eaten');
+        return this.move();
+    } else {
+        // remove last if no food eaten
+        this.tail.pop();
+    }
 
     // finally redraw
     this.drawSnake();
+
+    // keep in boundaries
+    if (coordinates.y <= 0 || coordinates.y >= 300 || coordinates.x <= 0 || coordinates.x >= 400) {
+        console.log('game over');
+        _.trigger('game:over');
+    }
 };
 
 
@@ -85,11 +97,11 @@ Snake.prototype.drawSnake = function () {
  */
 Snake.prototype.createSegment = function (x, y) {
 
-    x = x || 198;
-    y = y || 148;
+    x = x || 200;
+    y = y || 150;
 
     this.ctx.beginPath();
-    this.ctx.rect(x, y, 4, 4);
+    this.ctx.rect(x, y, 10, 10);
     this.ctx.fillStyle = 'black';
     this.ctx.fill();
 };

@@ -22,13 +22,16 @@ var _ = {
 
         _.forEach(bindings, function (method, binding) {
 
-            try {
-                scope[method]._scope = scope;
-            } catch (e) {
-                console.error('bound method does not exists');
+            if (typeof method === 'string') {
+                try {
+                    method = scope[method];
+                    method._scope = scope;
+                } catch (e) {
+                    console.error('bound method does not exists');
+                }
             }
             _.events[binding] = _.events[binding] || [];
-            _.events[binding].push(scope[method]);
+            _.events[binding].push(method);
         });
     },
 
@@ -92,5 +95,17 @@ var _ = {
      */
     toArray: function (item) {
         return Array.prototype.slice.call(item);
+    },
+
+
+    /**
+     * random
+     *
+     * @param limit {Number}
+     * @param rounding {Number}
+     * @returns {Number}
+     */
+    random: function (limit, rounding) {
+        return Math.round((Math.random() * limit) / rounding) * rounding;
     }
 };
