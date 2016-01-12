@@ -55,6 +55,8 @@ Snake.prototype.move = function () {
             break;
     }
 
+
+
     // add to start of tail
     this.tail.unshift(coordinates);
 
@@ -70,8 +72,7 @@ Snake.prototype.move = function () {
     this.drawSnake();
 
     // keep in boundaries
-    if (coordinates.y <= 0 || coordinates.y >= 300 || coordinates.x <= 0 || coordinates.x >= 400) {
-        console.log('game over');
+    if (coordinates.y < 0 || coordinates.y > 290 || coordinates.x < 0 || coordinates.x > 390) {
         _.trigger('game:over');
     }
 };
@@ -97,8 +98,8 @@ Snake.prototype.drawSnake = function () {
  */
 Snake.prototype.createSegment = function (x, y) {
 
-    x = x || 200;
-    y = y || 150;
+    x = (typeof x === 'number') ? x : 200;
+    y = (typeof y === 'number') ? y : 150;
 
     this.ctx.beginPath();
     this.ctx.rect(x, y, 10, 10);
@@ -121,4 +122,8 @@ Snake.prototype.setDirection = function (keyCode) {
     if (index >= 0 && index <= 3) {
         this.direction = index;
     }
+};
+
+Snake.prototype.foo = function () {
+
 };
