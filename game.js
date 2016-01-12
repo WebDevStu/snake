@@ -34,7 +34,6 @@
 
     _.listenTo({
         'game:over': function () {
-            console.log('game over');
             gameInPlay = false;
         }
     })

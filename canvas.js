@@ -8,7 +8,8 @@ var Canvas = function () {
     // listen events
     _.listenTo({
         'frame:change': 'draw',
-        'food:eaten': 'setFood'
+        'food:eaten':   'setFood',
+        'game:over':    'gameOver'
     }, this);
 
     // config
@@ -38,6 +39,14 @@ var Canvas = function () {
 
 
 /**
+ * clear
+ */
+Canvas.prototype.clear = function () {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+};
+
+
+/**
  * draw
  */
 Canvas.prototype.draw = function () {
@@ -47,7 +56,7 @@ Canvas.prototype.draw = function () {
     if (this.frame >= this.speed) {
         this.frame = 0;
 
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.clear();
         this.snake.move();
 
         this.drawFood()
@@ -76,4 +85,13 @@ Canvas.prototype.drawFood = function () {
     this.ctx.rect(this.food.x, this.food.y, 10, 10);
     this.ctx.fillStyle = 'black';
     this.ctx.fill();
+};
+
+
+Canvas.prototype.gameOver = function () {
+
+    this.clear();
+
+    this.ctx.font = "70px Arial";
+    this.ctx.fillText("Game Over!",10,150);
 };

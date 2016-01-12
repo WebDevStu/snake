@@ -55,26 +55,22 @@ Snake.prototype.move = function () {
             break;
     }
 
-
-
     // add to start of tail
     this.tail.unshift(coordinates);
 
     if (coordinates.x === this.food.x && coordinates.y === this.food.y) {
+
         _.trigger('food:eaten');
+
         return this.move();
-    } else {
-        // remove last if no food eaten
-        this.tail.pop();
     }
+
+    // remove last if no food eaten
+    this.tail.pop();
 
     // finally redraw
-    this.drawSnake();
-
-    // keep in boundaries
-    if (coordinates.y < 0 || coordinates.y > 290 || coordinates.x < 0 || coordinates.x > 390) {
-        _.trigger('game:over');
-    }
+    this.drawSnake()
+        .checkBoundaries(coordinates);
 };
 
 
@@ -86,6 +82,8 @@ Snake.prototype.drawSnake = function () {
     _.forEach(this.tail, function (config) {
         this.createSegment(config.x, config.y);
     }, this);
+
+    return this;
 };
 
 
@@ -111,6 +109,9 @@ Snake.prototype.createSegment = function (x, y) {
 /**
  * setDirection
  * sets the direction based on the key pressed
+ *
+ * @TODO stop being able to go in the opposite direction
+ * 
  * @param keyCode {Number}
  */
 Snake.prototype.setDirection = function (keyCode) {
@@ -124,6 +125,31 @@ Snake.prototype.setDirection = function (keyCode) {
     }
 };
 
-Snake.prototype.foo = function () {
 
+/**
+ * checkBoundaries
+ *
+ * @param coordinates {Object}
+ */
+Snake.prototype.checkBoundaries = function (coordinates) {
+
+    var illegalMove = false;
+
+    // keep in boundaries
+    if (coordinates.y < 0 || coordinates.y > 290 || coordinates.x < 0 || coordinates.x > 390) {
+        _.trigger('game:over');
+
+        return;
+    }
+
+    _.forEach(this.tail.slice(1), function (conf) {
+
+        if ((conf.x === coordinates.x) && (conf.y === coordinates.y)) {
+            illegalMove = true;
+        }
+    });
+
+    if (illegalMove) {
+        _.trigger('game:over');
+    }
 };
