@@ -111,7 +111,7 @@ Snake.prototype.createSegment = function (x, y) {
  * sets the direction based on the key pressed
  *
  * @TODO stop being able to go in the opposite direction
- * 
+ *
  * @param keyCode {Number}
  */
 Snake.prototype.setDirection = function (keyCode) {
