@@ -69,8 +69,19 @@ Canvas.prototype.draw = function () {
  */
 Canvas.prototype.setFood = function () {
 
-    this.food.x = _.random(390, 10);
-    this.food.y = _.random(140, 10);
+    var coordinates = {
+        x: _.random(390, 10),
+        y: _.random(140, 10)
+    };
+
+    while (this.snake.isInSnakeTail(coordinates)) {
+        coordinates.x = _.random(390, 10);
+        coordinates.y = _.random(140, 10);
+    }
+
+
+    this.food.x = coordinates.x;
+    this.food.y = coordinates.y;
 
     this.drawFood();
 };
@@ -88,6 +99,9 @@ Canvas.prototype.drawFood = function () {
 };
 
 
+/**
+ * gameOver
+ */
 Canvas.prototype.gameOver = function () {
 
     this.clear();

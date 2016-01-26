@@ -110,8 +110,6 @@ Snake.prototype.createSegment = function (x, y) {
  * setDirection
  * sets the direction based on the key pressed
  *
- * @TODO stop being able to go in the opposite direction
- *
  * @param keyCode {Number}
  */
 Snake.prototype.setDirection = function (keyCode) {
@@ -139,8 +137,6 @@ Snake.prototype.setDirection = function (keyCode) {
  */
 Snake.prototype.checkBoundaries = function (coordinates) {
 
-    var illegalMove = false;
-
     // keep in boundaries
     if (coordinates.y < 0 || coordinates.y > 290 || coordinates.x < 0 || coordinates.x > 390) {
         _.trigger('game:over');
@@ -148,14 +144,25 @@ Snake.prototype.checkBoundaries = function (coordinates) {
         return;
     }
 
-    _.forEach(this.tail.slice(1), function (conf) {
+    if (this.isInSnakeTail(coordinates, this.tail.slice(1))) {
+        _.trigger('game:over');
+    }
+};
+
+
+
+Snake.prototype.isInSnakeTail = function (coordinates, tail) {
+
+    var overlaps = false;
+
+    tail = tail || this.tail;
+
+    _.forEach(tail, function (conf) {
 
         if ((conf.x === coordinates.x) && (conf.y === coordinates.y)) {
-            illegalMove = true;
+            overlaps = true;
         }
     });
 
-    if (illegalMove) {
-        _.trigger('game:over');
-    }
+    return overlaps;
 };
