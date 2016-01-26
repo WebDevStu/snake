@@ -117,12 +117,18 @@ Snake.prototype.createSegment = function (x, y) {
 Snake.prototype.setDirection = function (keyCode) {
 
     // 37 = left, 38 = up, 39 = right, 40 = down
-    var dir = ['up', 'right', 'down', 'left'],
+    var blocks = [2, 3, 0, 1],
         index = keyCode - 37;
 
-    if (index >= 0 && index <= 3) {
-        this.direction = index;
+    if (index < 0 && index > 3) {
+        return;
     }
+
+    if (blocks[this.direction] === index) {
+        return;
+    }
+
+    this.direction = index;
 };
 
 
