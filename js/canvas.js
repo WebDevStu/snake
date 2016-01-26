@@ -9,6 +9,7 @@ var Canvas = function () {
     _.listenTo({
         'frame:change': 'draw',
         'food:eaten':   'setFood',
+        'change:speed': 'speedUpSnake',
         'game:over':    'gameOver'
     }, this);
 
@@ -79,7 +80,6 @@ Canvas.prototype.setFood = function () {
         coordinates.y = _.random(140, 10);
     }
 
-
     this.food.x = coordinates.x;
     this.food.y = coordinates.y;
 
@@ -96,6 +96,15 @@ Canvas.prototype.drawFood = function () {
     this.ctx.rect(this.food.x, this.food.y, 10, 10);
     this.ctx.fillStyle = 'black';
     this.ctx.fill();
+};
+
+
+/**
+ * speedUpSnake
+ * speeds up the refresh rate and in turn speeds up the snake
+ */
+Canvas.prototype.speedUpSnake = function () {
+    this.speed -= 0.1;
 };
 
 

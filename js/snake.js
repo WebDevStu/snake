@@ -61,6 +61,7 @@ Snake.prototype.move = function () {
     if (coordinates.x === this.food.x && coordinates.y === this.food.y) {
 
         _.trigger('food:eaten');
+        _.trigger('change:speed');
 
         return this.move();
     }
@@ -150,7 +151,13 @@ Snake.prototype.checkBoundaries = function (coordinates) {
 };
 
 
-
+/**
+ * isInSnakeTail
+ *
+ * @param coordinates {Object}
+ * @param tail {Array}
+ * @returns {boolean}
+ */
 Snake.prototype.isInSnakeTail = function (coordinates, tail) {
 
     var overlaps = false;
