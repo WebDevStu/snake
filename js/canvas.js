@@ -125,10 +125,25 @@ Canvas.prototype.setFood = function () {
  */
 Canvas.prototype.drawFood = function () {
 
-    this.ctx.beginPath();
-    this.ctx.rect(this.food.x, this.food.y, 10, 10);
-    this.ctx.fillStyle = 'black';
-    this.ctx.fill();
+    var draw = false,
+        x,
+        y,
+        i;
+
+    for (i = 0; i < 9; i += 1) {
+
+        y = Math.floor(i / 3) * 3;
+        x = (i % 3) * 3;
+
+        if (draw) {
+            this.ctx.beginPath();
+            this.ctx.rect((this.food.x + x), (this.food.y + y), 3, 3);
+            this.ctx.fillStyle = 'black';
+            this.ctx.fill();
+        }
+
+        draw = !draw;
+    }
 
     return this;
 };
