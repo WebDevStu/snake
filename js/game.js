@@ -4,6 +4,7 @@
 
     var canvas = new Canvas(),
         gameInPlay = true,
+        score = 0,
         render = function () {
 
             if (gameInPlay) {
@@ -29,12 +30,22 @@
         _.trigger('change:direction', evt.keyCode);
     }, false);
 
-    // start the game
-    window.requestAnimationFrame(render);
 
     _.listenTo({
+        'food:eaten': function () {
+            canvas.gameScore += 1;
+            _.trigger('change:score', 'gameScore');
+        },
         'game:over': function () {
             gameInPlay = false;
         }
-    })
+    });
+
+    // set the first food
+    canvas
+        .drawBoard()
+        .setFood();
+
+    // start the game
+    window.requestAnimationFrame(render);
 } ());
