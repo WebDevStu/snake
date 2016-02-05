@@ -68,6 +68,25 @@ Canvas.prototype.drawBoard = function () {
     return this;
 };
 
+
+/**
+ * reset
+ * @returns {Canvas}
+ */
+Canvas.prototype.reset = function () {
+
+    this.clear();
+
+    // resets
+    this.gameScore = 0;
+    this.speed = 10;
+    this.snake = new Snake(this.ctx, this.food);
+
+    _.trigger('change:score', 'gameScore', '0');
+
+    return this;
+};
+
 /**
  * clear
  */
@@ -187,6 +206,9 @@ Canvas.prototype.gameOver = function () {
 
     this.ctx.font = "70px Arial";
     this.ctx.fillText("Game Over!", 10, 150);
+
+    this.ctx.font = "20px Arial";
+    this.ctx.fillText("click to try again", 130, 200);
 
     if (+this.gameScore > +this.highScore) {
         _.trigger('change:score', 'highScore', this.gameScore);

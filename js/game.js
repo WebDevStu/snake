@@ -2,9 +2,13 @@
 
 (function () {
 
-    var canvas = new Canvas(),
+    var board = new Canvas(),
         gameInPlay = true,
-        score = 0,
+
+
+        /**
+         * render
+         */
         render = function () {
 
             if (gameInPlay) {
@@ -12,38 +16,81 @@
                 _.trigger('frame:change');
                 window.requestAnimationFrame(render);
             }
+        },
+
+
+        /**
+         * stopGame
+         */
+        stopGame = function () {
+            gameInPlay = false;
+        },
+
+
+        /**
+         * startGame
+         */
+        startGame = function () {
+            gameInPlay = true;
+            window.requestAnimationFrame(render);
+        },
+
+
+        /**
+         * changeDirection
+         *
+         * @param evt {Event.Object}
+         */
+        changeDirection = function (evt) {
+            _.trigger('change:direction', evt.keyCode);
+        },
+
+
+        /**
+         * changeScore
+         */
+        changeScore = function () {
+
+            board.gameScore += 1;
+
+            _.trigger('change:score', 'gameScore');
+        },
+
+
+        /**
+         * tryNewGame
+         */
+        tryNewGame = function () {
+
+            if (gameInPlay) {
+                return;
+            }
+
+            // new Game
+            board.reset()
+                .setFood();
+
+            startGame();
         };
 
     // pause the game on blur
-    window.addEventListener('blur', function () {
-        gameInPlay = false;
-    });
-
+    window.addEventListener('blur', stopGame, false);
     // start again on focus
-    window.addEventListener('focus', function () {
-        gameInPlay = true;
-        window.requestAnimationFrame(render);
-    });
-
+    window.addEventListener('focus', startGame, false);
     // get key down events
-    window.addEventListener('keydown', function (evt) {
-        _.trigger('change:direction', evt.keyCode);
-    }, false);
+    window.addEventListener('keydown', changeDirection, false);
+    // click the board
+    board.canvas.addEventListener('click', tryNewGame, false);
 
 
+    // subscribed events
     _.listenTo({
-        'food:eaten': function () {
-            canvas.gameScore += 1;
-            _.trigger('change:score', 'gameScore');
-        },
-        'game:over': function () {
-            gameInPlay = false;
-        }
+        'food:eaten':   changeScore,
+        'game:over':    stopGame
     });
 
     // set the first food
-    canvas
-        .drawBoard()
+    board.drawBoard()
         .setFood();
 
     // start the game
