@@ -102,13 +102,13 @@ Canvas.prototype.draw = function () {
 Canvas.prototype.setFood = function () {
 
     var coordinates = {
-        x: _.random(390, 10),
-        y: _.random(140, 10)
+        x: _.random(20, 380, 10),
+        y: _.random(20, 280, 10)
     };
 
     while (this.snake.isInSnakeTail(coordinates)) {
-        coordinates.x = _.random(390, 10);
-        coordinates.y = _.random(140, 10);
+        coordinates.x = _.random(20, 380, 10);
+        coordinates.y = _.random(20, 280, 10);
     }
 
     this.food.x = coordinates.x;
